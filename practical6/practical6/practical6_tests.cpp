@@ -3,9 +3,6 @@
 * https://github.com/catchorg/Catch2/
 *
 * practical6_tests.cpp
-*
-* Updated on: 7th March 2018
-* Author: Your name
 */
 
 // important to add this definition and then include the library
@@ -23,8 +20,10 @@
 template<class T>
 T getNthLargest(int n, const ArrayList<T> & list)
 {
-	// replace with your algorithm 
-	return 0;
+	// create an ordered list from the un-ordered arraylist
+	OrderedList<T> temp(list);
+
+	return temp.get(temp.size() - n);
 }
 
 
@@ -39,32 +38,75 @@ TEST_CASE("ArrayList Processing Axioms", "[ArrayListFunc]")
 
 	SECTION("Test getNthLargest")
 	{	
-		// create a suitable test - replace true with the test expression
-		REQUIRE(true);
+		// setup
+		l.add(1); 
+		l.add(2); 
+		l.add(4); 
+		l.add(8);
+
+		// largest element in l should be 8
+		REQUIRE(getNthLargest(1, l) == 8);
+		REQUIRE(getNthLargest(2, l) == 4);
+		REQUIRE(getNthLargest(3, l) == 2);
+		REQUIRE(getNthLargest(4, l) == 1);
 	}
 
 	SECTION("Test Reverse")
 	{
-		// create a suitable test - replace true with the test expression
-		REQUIRE(true);
+		// setup
+		l.add(3); l.add(2); l.add(9); l.add(7);
+
+		// reverse of the reverse of l should be equal to l
+		REQUIRE(l.reverse().reverse() == l);
 	}
 
 	SECTION("Test Take")
 	{
-		// create a suitable test - replace true with the test expression
-		REQUIRE(true);
+		// setup
+		l.add(1);
+		l.add(2);
+		l.add(4);
+		l.add(8);
+
+		// create a result list that should be equal to the result of taking 2 from l
+		ArrayList<int> r; 
+		r.add(1); 
+		r.add(2);
+
+		// taking first 2 elements of l produces a list equal to r
+		REQUIRE(l.take(2) == r);
 	}
 
 	SECTION("Test Drop")
 	{
-		// create a suitable test - replace true with the test expression
-		REQUIRE(true);
+		// setup
+		l.add(1);
+		l.add(2);
+		l.add(4);
+		l.add(8);
+
+		// create a result list that should be equal to the result of dropping 2 from l
+		ArrayList<int> r; 
+		r.add(4);
+		r.add(8);
+
+		// dropping first 2 elements of l produces a list equal to r
+		REQUIRE(l.drop(2) == r);
 	}
 
 	SECTION("Test mid")
 	{
-		// create a suitable test - replace true with the test expression
-		REQUIRE(true);
+		// setup
+		l.add(1);
+		l.add(2);
+		l.add(4);
+		l.add(8);
+
+		ArrayList<int> m = l.mid(0, 2);
+
+		// check new list is correct size and first and last elements
+		REQUIRE(m.size() == 2);
+		REQUIRE(m.get(1) == 2);
 	}
 }
 

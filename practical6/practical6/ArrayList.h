@@ -168,29 +168,40 @@ std::ostream& operator <<(std::ostream& output, const ArrayList<T>& l) {
 	return output;  // for multiple << operators.
 }
 
-
-
 // ----------------- COMPLETE THESE FUNCTIONS -----------------------------
 
 // PreCondition: pos is a valid ArrayList position and ArrayList is not full
 // PostCondition: inserts element value at specified position in ArrayList
 template<class T>
 void ArrayList<T>::add(int pos, const T & value) {
-	if (pos < 0 || pos > count)
+	if (pos < 0 || pos > count) {
 		throw std::out_of_range("ArrayList: invalid postion: " + std::to_string(pos));
+	}
 
-	// complete this function
+	if (count >= data.length()) {
+		data.resize(data.length() * 2);
+	}
 
+	for (int i = count; i > pos; i--) {
+		data[i] = data[i - 1];
+	}
+
+	data[pos] = value;
+	count++;
 }
 
 // PreCondition: pos is a valid ArrayList position
 // PostCondition: remove element at specified position in  ArrayList
 template<class T>
 void ArrayList<T>::remove(int pos) {
-	if (pos < 0 || pos >= count)
-		throw std::out_of_range("ArrayList: invalid postion: " + std::to_string(pos));
+	if (count >= data.length()) {
+		data.resize(data.length() * 2);
+	}
 
-	// complete this function
+	for (int i = count; i > pos; i++) {
+		data[i] = data[i + 1];
+	}
+	count--;
 }
 
 
@@ -202,21 +213,26 @@ ArrayList<T> ArrayList<T>::reverse() const
 {
 	ArrayList<T> r(size());
 
-	// complete function by filling r with elements in list in reverse order
-
+	for (int i = size() - 1; i >= 0; i--) {
+		r.add(get(i));
+	}
 	return r;
 }
 
 template<class T>
 ArrayList<T> ArrayList<T>::take(int n) const
 {
-	if (n < 0 || n > size())
+	if (n < 0 || n > size()) {
 		throw std::out_of_range("ArrayList: invalid number of elements to take: " + std::to_string(n));
-
+	}
+		
 	// create result array 
 	ArrayList<T> t(n);
 	
 	// complete function by filling t with first n elements of list
+	for (int i = 0; i < n; i++) {
+		t.add(get(i));
+	}
 
 	return t;
 }
@@ -231,7 +247,9 @@ ArrayList<T> ArrayList<T>::drop(int n) const
 	ArrayList<T> d(size()-n);
 
     // complete function by filling d with list minus first n elements
-
+	for (int i = n; i < size(); i++) {
+		d.add(get(i));
+	}
 	return d;
 }
 
@@ -240,14 +258,14 @@ ArrayList<T> ArrayList<T>::drop(int n) const
 template<class T>
 ArrayList<T> ArrayList<T>::mid(int start, int count) const
 {
-	if (start < 0 || start >= size() || count > size()-start)
-		throw std::out_of_range("ArrayList: mid(" + std::to_string(start) +"," + std::to_string(count) + ") invalid");
+	if (start < 0 || start >= size() || count > size() - start) {
+		throw std::out_of_range("ArrayList: mid(" + std::to_string(start) + "," + std::to_string(count) + ") invalid");
+	}
 
 	// complete function - replace the return statement below with code to
 	// return a new list containing count elements starting from position start in list
 	// note this can be achieved in a single statement using drop and take.
-
-	return ArrayList<T>(); 
+	return drop(start).take(count);
 }
 
 
